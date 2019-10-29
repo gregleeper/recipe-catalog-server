@@ -21,14 +21,20 @@ const Query = {
 
     return prisma.query.users(opArgs, info);
   },
+  user(parent, args, { prisma }, info) {
+    return prisma.query.user({ where: { id: args.where.id } }, info);
+  },
   me(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
 
-    return prisma.query.user({
-      where: {
-        id: userId
-      }
-    });
+    return prisma.query.user(
+      {
+        where: {
+          id: userId
+        }
+      },
+      info
+    );
   },
   categories(parent, args, { prisma, request }, info) {
     const opArgs = {
