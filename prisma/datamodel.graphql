@@ -1,8 +1,25 @@
 type User {
-  id: ID! @unique
+  id: ID! @id
   name: String!
   email: String! @unique
   password: String!
-  updatedAt: DateTime!
-  createdAt: DateTime!
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
+  recipes: [Recipe!] @relation(name: "UserRecipes")
+}
+
+type Recipe {
+  id: ID! @id
+  title: String!
+  author: User! @relation(name: "UserRecipes")
+  ingredients: [String!]! @scalarList(strategy: RELATION)
+  directions: String
+  categories: [Category!]! @relation(name: "RecipeCategories")
+  tags: [String!]! @scalarList(strategy: RELATION)
+}
+
+type Category {
+  id: ID! @id
+  name: String!
+  recipes: [Recipe] @relation(name: "RecipeCategories")
 }

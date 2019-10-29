@@ -1,54 +1,190 @@
 # import UserOrderByInput from './generated/prisma.graphql'
+# import CategoryWhereUniqueInput from './generated/prisma.graphql'
+# import CategoryWhereInput from './generated/prisma.graphql'
+# import CategoryOrderByInput from './generated/prisma.graphql'
+# import RecipeWhereUniqueInput from './generated/prisma.graphql'
+# import RecipeWhereInput from './generated/prisma.graphql'
+# import RecipeOrderByInput from './generated/prisma.graphql'
 
 type Query {
-    users(query: String, first: Int, skip: Int, after: String, orderBy: UserOrderByInput): [User!]!
-    me: User!
+  users(
+    query: String
+    first: Int
+    skip: Int
+    after: String
+    orderBy: UserOrderByInput
+  ): [User!]!
+  me: User!
+  category(where: CategoryWhereUniqueInput!): Category
+  categories(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Category]!
+  categoriesConnection(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): CategoryConnection!
+  recipe(where: RecipeWhereUniqueInput!): Recipe
+  recipes(
+    where: RecipeWhereInput
+    orderBy: RecipeOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Recipe]!
+  recipesConnection(
+    where: RecipeWhereInput
+    orderBy: RecipeOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): RecipeConnection!
 }
 
 type Mutation {
-    createUser(data: CreateUserInput!): AuthPayload!
-    login(data: LoginUserInput!): AuthPayload!
-    deleteUser: User!
-    updateUser(data: UpdateUserInput!): User!
+  createUser(data: CreateUserInput!): AuthPayload!
+  login(data: LoginUserInput!): AuthPayload!
+  deleteUser: User!
+  updateUser(data: UpdateUserInput!): User!
+  createCategory(data: CategoryCreateInput!): Category!
+  updateCategory(
+    data: CategoryUpdateInput!
+    where: CategoryWhereUniqueInput!
+  ): Category
+  upsertCategory(
+    where: CategoryWhereUniqueInput!
+    create: CategoryCreateInput!
+    update: CategoryUpdateInput!
+  ): Category!
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
+  createRecipe(data: RecipeCreateInput!): Recipe!
+  updateRecipe(data: RecipeUpdateInput!, where: RecipeWhereUniqueInput!): Recipe
+  updateManyRecipes(
+    data: RecipeUpdateManyMutationInput!
+    where: RecipeWhereInput
+  ): BatchPayload!
+  upsertRecipe(
+    where: RecipeWhereUniqueInput!
+    create: RecipeCreateInput!
+    update: RecipeUpdateInput!
+  ): Recipe!
+  deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
+  deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
 }
 
 # type Subscription {
 
 # }
 
+type Category {
+  id: ID!
+  name: String!
+  recipes(
+    where: RecipeWhereInput
+    orderBy: RecipeOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Recipe!]
+}
+
+type CategoryConnection {
+  pageInfo: PageInfo!
+  edges: [CategoryEdge]!
+  aggregate: AggregateCategory!
+}
+
+type Recipe {
+  id: ID!
+  title: String!
+  ingredients: [String!]!
+  directions: String
+  categories(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Category!]
+  tags: [String!]!
+  author: User!
+}
+
+type RecipeConnection {
+  pageInfo: PageInfo!
+  edges: [RecipeEdge]!
+  aggregate: AggregateRecipe!
+}
+
 type AuthPayload {
-    token: String!
-    user: User!
+  token: String!
+  user: User!
 }
 
 input CreateUserInput {
-    name: String!
-    email: String!
-    password: String!
+  name: String!
+  email: String!
+  password: String!
 }
 
 input LoginUserInput {
-    email: String!
-    password: String!
+  email: String!
+  password: String!
 }
 
 input UpdateUserInput {
-    name: String
-    email: String
-    password: String
+  name: String
+  email: String
+  password: String
 }
 
 type User {
-    id: ID!
-    name: String!
-    email: String
-    password: String!
-    updatedAt: String!
-    createdAt: String!
+  id: ID!
+  name: String!
+  email: String
+  password: String!
+  updatedAt: String!
+  createdAt: String!
+}
+
+input RecipeCreateingredientsInput {
+  set: [String!]
+}
+
+input RecipeCreateInput {
+  id: ID
+  title: String!
+  ingredients: RecipeCreateingredientsInput
+  directions: String
+  categories: CategoryCreateManyWithoutRecipesInput
+  tags: RecipeCreatetagsInput
+}
+
+input CategoryCreateManyWithoutRecipesInput {
+  create: [CategoryCreateWithoutRecipesInput!]
+  connect: [CategoryWhereUniqueInput!]
 }
 
 enum MutationType {
-    CREATED
-    UPDATED
-    DELETED
+  CREATED
+  UPDATED
+  DELETED
 }
