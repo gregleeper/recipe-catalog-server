@@ -5,6 +5,7 @@
 # import RecipeWhereUniqueInput from './generated/prisma.graphql'
 # import RecipeWhereInput from './generated/prisma.graphql'
 # import RecipeOrderByInput from './generated/prisma.graphql'
+# import UserWhereUniqueInput from './generated/prisma.graphql'
 
 type Query {
   users(
@@ -14,6 +15,7 @@ type Query {
     after: String
     orderBy: UserOrderByInput
   ): [User!]!
+  user(where: UserWhereUniqueInput!): User
   me: User!
   category(where: CategoryWhereUniqueInput!): Category
   categories(
