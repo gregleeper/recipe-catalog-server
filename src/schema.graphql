@@ -165,6 +165,15 @@ type User {
   password: String!
   updatedAt: String!
   createdAt: String!
+  recipes(
+    where: RecipeWhereInput
+    orderBy: RecipeOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Recipe!]
 }
 
 input RecipeCreateingredientsInput {
