@@ -1,7 +1,7 @@
 import getUserId from "../utils/getUserId";
 
 const Query = {
-  users(parent, args, { prisma }, info) {
+  async users(parent, args, { prisma }, info) {
     const opArgs = {
       first: args.first,
       skip: args.skip,
@@ -18,16 +18,15 @@ const Query = {
         ]
       };
     }
-
-    return prisma.query.users(opArgs, info);
+    return await prisma.query.users(opArgs, info);
   },
-  user(parent, args, { prisma }, info) {
-    return prisma.query.user({ where: { id: args.where.id } }, info);
+  async user(parent, args, { prisma }, info) {
+    return await prisma.query.user({ where: { id: args.where.id } }, info);
   },
-  me(parent, args, { prisma, request }, info) {
+  async me(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
 
-    return prisma.query.user(
+    return await prisma.query.user(
       {
         where: {
           id: userId
@@ -36,7 +35,7 @@ const Query = {
       info
     );
   },
-  categories(parent, args, { prisma, request }, info) {
+  async categories(parent, args, { prisma, request }, info) {
     const opArgs = {
       first: args.first,
       skip: args.skip,
@@ -54,10 +53,10 @@ const Query = {
       };
     }
 
-    return prisma.query.categories(opArgs, info);
+    return await prisma.query.categories(opArgs, info);
   },
-  category(parent, args, { prisma, request }, info) {
-    return prisma.query.category(
+  async category(parent, args, { prisma, request }, info) {
+    return await prisma.query.category(
       {
         where: {
           id: args.where.id
@@ -66,7 +65,7 @@ const Query = {
       info
     );
   },
-  recipes(parent, args, { prisma, request }, info) {
+  async recipes(parent, args, { prisma, request }, info) {
     const opArgs = {
       first: args.first,
       skip: args.skip,
@@ -84,10 +83,10 @@ const Query = {
       };
     }
 
-    return prisma.query.recipes(opArgs, info);
+    return await prisma.query.recipes(opArgs, info);
   },
-  recipe(parent, args, { prisma, request }, info) {
-    return prisma.query.recipe(
+  async recipe(parent, args, { prisma, request }, info) {
+    return await prisma.query.recipe(
       {
         where: {
           id: args.where.id
