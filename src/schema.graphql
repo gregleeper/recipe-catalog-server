@@ -6,6 +6,11 @@
 # import RecipeWhereInput from './generated/prisma.graphql'
 # import RecipeOrderByInput from './generated/prisma.graphql'
 # import UserWhereUniqueInput from './generated/prisma.graphql'
+# import ImageWhereUniqueInput from './generated/prisma.graphql'
+# import ImageWhereInput from './generated/prisma.graphql'
+# import ImageOrderByInput from './generated/prisma.graphql'
+# imoprt ImageCreateInput from './generated/prisma.graphql'
+# import ImageUpdateInput from './generated/prisma.graphql'
 
 type Query {
   users(
@@ -55,6 +60,16 @@ type Query {
     first: Int
     last: Int
   ): RecipeConnection!
+  image(where: ImageWhereUniqueInput!): Image
+  images(
+    where: ImageWhereInput
+    orderBy: ImageOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Image]!
 }
 
 type Mutation {
@@ -86,6 +101,11 @@ type Mutation {
   ): Recipe!
   deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
   deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
+  createImage(data: ImageCreateInput!): Image!
+  updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
+  deleteImage(where: ImageWhereUniqueInput!): Image
+  uploadImage(file: Upload!): Image!
+  renameImage(id: ID!, name: String!): Image
 }
 
 # type Subscription {
@@ -175,6 +195,7 @@ type User {
     last: Int
   ): [Recipe!]
 }
+scalar Upload
 
 input RecipeCreateingredientsInput {
   set: [String!]

@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import getUserId from "../utils/getUserId";
 import generateToken from "../utils/generateToken";
 import hashPassword from "../utils/hashPassword";
+import { processUpload } from "../utils/imageApi";
+import cors from "cors";
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -137,6 +139,20 @@ const Mutation = {
     throw new Error(
       "Recipe does not exist or you must be the author to update."
     );
+  },
+  async uploadImage(parent, { file }, ctx, info) {
+    return await processUpload(file, ctx);
+  },
+  async renameImage(parent, { id, name }, { prisma, request }, info) {
+    return await prisma.mutation.updateImage({
+      data: { name },
+      where: { id },
+      info
+    });
+  },
+
+  async deleteImage(parent, { id }, { prisma, request }, info) {
+    return await prisma.mutation.deleteImage({ where: { id } }, info);
   }
 };
 

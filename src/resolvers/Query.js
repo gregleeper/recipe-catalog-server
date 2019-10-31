@@ -94,6 +94,26 @@ const Query = {
       },
       info
     );
+  },
+  async images(parent, args, { prisma, request }, info) {
+    const opArgs = {
+      first: args.first,
+      skip: args.skip,
+      after: args.after,
+      orderBy: args.orderBy
+    };
+    return await prisma.query.images(opArgs, info);
+  },
+  async image(parent, args, { prisma, request }, info) {
+    return prisma.query.image(
+      {
+        where: {
+          id: args.where.id,
+          url: args.where.url
+        }
+      },
+      info
+    );
   }
 };
 

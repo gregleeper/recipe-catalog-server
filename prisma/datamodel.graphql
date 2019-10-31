@@ -8,10 +8,21 @@ type User {
   recipes: [Recipe!] @relation(name: "UserRecipes")
 }
 
+type Image {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  filename: String!
+  mimetype: String!
+  encoding: String!
+  url: String! @unique
+}
+
 type Recipe {
   id: ID! @id
   title: String!
   author: User! @relation(name: "UserRecipes")
+  image: Image @relation(name: "RecipeImage")
   ingredients: [String!]! @scalarList(strategy: RELATION)
   directions: String
   categories: [Category!]! @relation(name: "RecipeCategories")
