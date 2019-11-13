@@ -8,7 +8,7 @@ type User {
   recipes: [Recipe!] @relation(name: "UserRecipes")
 }
 
-type Image {
+type File {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -21,8 +21,9 @@ type Image {
 type Recipe {
   id: ID! @id
   title: String!
+  description: String
   author: User! @relation(name: "UserRecipes")
-  image: Image @relation(name: "RecipeImage")
+  image: File @relation(name: "RecipeImage")
   ingredients: [String!]! @scalarList(strategy: RELATION)
   directions: String
   categories: [Category!]! @relation(name: "RecipeCategories")

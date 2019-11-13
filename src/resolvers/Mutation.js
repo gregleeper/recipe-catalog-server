@@ -2,8 +2,16 @@ import bcrypt from "bcryptjs";
 import getUserId from "../utils/getUserId";
 import generateToken from "../utils/generateToken";
 import hashPassword from "../utils/hashPassword";
-import { processUpload } from "../utils/imageApi";
-import cors from "cors";
+import aws from "aws-sdk";
+
+const s3 = new aws.S3({
+  accessKeyId: "foo",
+  secretAccessKey: "bar",
+  params: {
+    Bucket: "com.prisma.s3"
+  },
+  endpoint: new aws.Endpoint("http://localhost:4569") // fake s3 endpoint for local dev
+});
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -141,7 +149,14 @@ const Mutation = {
     );
   },
   async uploadImage(parent, { file }, ctx, info) {
-    return await processUpload(file, ctx);
+    try {
+      const { stream, filename } = await file;
+      const result = await s3.upload({ stream, filename });
+      console.log(result);
+      return result;
+    } catch (err) {
+      throw new Error("upload error: ", err);
+    }
   },
   async renameImage(parent, { id, name }, { prisma, request }, info) {
     return await prisma.mutation.updateImage({

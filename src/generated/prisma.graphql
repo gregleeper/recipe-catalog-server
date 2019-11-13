@@ -2,7 +2,7 @@ type AggregateCategory {
   count: Int!
 }
 
-type AggregateImage {
+type AggregateFile {
   count: Int!
 }
 
@@ -21,15 +21,7 @@ type BatchPayload {
 type Category {
   id: ID!
   name: String!
-  recipes(
-    where: RecipeWhereInput
-    orderBy: RecipeOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [Recipe!]
+  recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe!]
 }
 
 type CategoryConnection {
@@ -211,7 +203,7 @@ input CategoryWhereUniqueInput {
 
 scalar DateTime
 
-type Image {
+type File {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -221,13 +213,13 @@ type Image {
   url: String!
 }
 
-type ImageConnection {
+type FileConnection {
   pageInfo: PageInfo!
-  edges: [ImageEdge]!
-  aggregate: AggregateImage!
+  edges: [FileEdge]!
+  aggregate: AggregateFile!
 }
 
-input ImageCreateInput {
+input FileCreateInput {
   id: ID
   filename: String!
   mimetype: String!
@@ -235,17 +227,17 @@ input ImageCreateInput {
   url: String!
 }
 
-input ImageCreateOneInput {
-  create: ImageCreateInput
-  connect: ImageWhereUniqueInput
+input FileCreateOneInput {
+  create: FileCreateInput
+  connect: FileWhereUniqueInput
 }
 
-type ImageEdge {
-  node: Image!
+type FileEdge {
+  node: File!
   cursor: String!
 }
 
-enum ImageOrderByInput {
+enum FileOrderByInput {
   id_ASC
   id_DESC
   createdAt_ASC
@@ -262,7 +254,7 @@ enum ImageOrderByInput {
   url_DESC
 }
 
-type ImagePreviousValues {
+type FilePreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -272,60 +264,60 @@ type ImagePreviousValues {
   url: String!
 }
 
-type ImageSubscriptionPayload {
+type FileSubscriptionPayload {
   mutation: MutationType!
-  node: Image
+  node: File
   updatedFields: [String!]
-  previousValues: ImagePreviousValues
+  previousValues: FilePreviousValues
 }
 
-input ImageSubscriptionWhereInput {
+input FileSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: ImageWhereInput
-  AND: [ImageSubscriptionWhereInput!]
-  OR: [ImageSubscriptionWhereInput!]
-  NOT: [ImageSubscriptionWhereInput!]
+  node: FileWhereInput
+  AND: [FileSubscriptionWhereInput!]
+  OR: [FileSubscriptionWhereInput!]
+  NOT: [FileSubscriptionWhereInput!]
 }
 
-input ImageUpdateDataInput {
+input FileUpdateDataInput {
   filename: String
   mimetype: String
   encoding: String
   url: String
 }
 
-input ImageUpdateInput {
+input FileUpdateInput {
   filename: String
   mimetype: String
   encoding: String
   url: String
 }
 
-input ImageUpdateManyMutationInput {
+input FileUpdateManyMutationInput {
   filename: String
   mimetype: String
   encoding: String
   url: String
 }
 
-input ImageUpdateOneInput {
-  create: ImageCreateInput
-  update: ImageUpdateDataInput
-  upsert: ImageUpsertNestedInput
+input FileUpdateOneInput {
+  create: FileCreateInput
+  update: FileUpdateDataInput
+  upsert: FileUpsertNestedInput
   delete: Boolean
   disconnect: Boolean
-  connect: ImageWhereUniqueInput
+  connect: FileWhereUniqueInput
 }
 
-input ImageUpsertNestedInput {
-  update: ImageUpdateDataInput!
-  create: ImageCreateInput!
+input FileUpsertNestedInput {
+  update: FileUpdateDataInput!
+  create: FileCreateInput!
 }
 
-input ImageWhereInput {
+input FileWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -412,12 +404,12 @@ input ImageWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
-  AND: [ImageWhereInput!]
-  OR: [ImageWhereInput!]
-  NOT: [ImageWhereInput!]
+  AND: [FileWhereInput!]
+  OR: [FileWhereInput!]
+  NOT: [FileWhereInput!]
 }
 
-input ImageWhereUniqueInput {
+input FileWhereUniqueInput {
   id: ID
   url: String
 }
@@ -426,58 +418,27 @@ scalar Long
 
 type Mutation {
   createCategory(data: CategoryCreateInput!): Category!
-  updateCategory(
-    data: CategoryUpdateInput!
-    where: CategoryWhereUniqueInput!
-  ): Category
-  updateManyCategories(
-    data: CategoryUpdateManyMutationInput!
-    where: CategoryWhereInput
-  ): BatchPayload!
-  upsertCategory(
-    where: CategoryWhereUniqueInput!
-    create: CategoryCreateInput!
-    update: CategoryUpdateInput!
-  ): Category!
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
-  createImage(data: ImageCreateInput!): Image!
-  updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
-  updateManyImages(
-    data: ImageUpdateManyMutationInput!
-    where: ImageWhereInput
-  ): BatchPayload!
-  upsertImage(
-    where: ImageWhereUniqueInput!
-    create: ImageCreateInput!
-    update: ImageUpdateInput!
-  ): Image!
-  deleteImage(where: ImageWhereUniqueInput!): Image
-  deleteManyImages(where: ImageWhereInput): BatchPayload!
+  createFile(data: FileCreateInput!): File!
+  updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
+  updateManyFiles(data: FileUpdateManyMutationInput!, where: FileWhereInput): BatchPayload!
+  upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
+  deleteFile(where: FileWhereUniqueInput!): File
+  deleteManyFiles(where: FileWhereInput): BatchPayload!
   createRecipe(data: RecipeCreateInput!): Recipe!
   updateRecipe(data: RecipeUpdateInput!, where: RecipeWhereUniqueInput!): Recipe
-  updateManyRecipes(
-    data: RecipeUpdateManyMutationInput!
-    where: RecipeWhereInput
-  ): BatchPayload!
-  upsertRecipe(
-    where: RecipeWhereUniqueInput!
-    create: RecipeCreateInput!
-    update: RecipeUpdateInput!
-  ): Recipe!
+  updateManyRecipes(data: RecipeUpdateManyMutationInput!, where: RecipeWhereInput): BatchPayload!
+  upsertRecipe(where: RecipeWhereUniqueInput!, create: RecipeCreateInput!, update: RecipeUpdateInput!): Recipe!
   deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
   deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(
-    data: UserUpdateManyMutationInput!
-    where: UserWhereInput
-  ): BatchPayload!
-  upsertUser(
-    where: UserWhereUniqueInput!
-    create: UserCreateInput!
-    update: UserUpdateInput!
-  ): User!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
@@ -501,100 +462,29 @@ type PageInfo {
 
 type Query {
   category(where: CategoryWhereUniqueInput!): Category
-  categories(
-    where: CategoryWhereInput
-    orderBy: CategoryOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [Category]!
-  categoriesConnection(
-    where: CategoryWhereInput
-    orderBy: CategoryOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): CategoryConnection!
-  image(where: ImageWhereUniqueInput!): Image
-  images(
-    where: ImageWhereInput
-    orderBy: ImageOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [Image]!
-  imagesConnection(
-    where: ImageWhereInput
-    orderBy: ImageOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ImageConnection!
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  file(where: FileWhereUniqueInput!): File
+  files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
+  filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   recipe(where: RecipeWhereUniqueInput!): Recipe
-  recipes(
-    where: RecipeWhereInput
-    orderBy: RecipeOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [Recipe]!
-  recipesConnection(
-    where: RecipeWhereInput
-    orderBy: RecipeOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): RecipeConnection!
+  recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
+  recipesConnection(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RecipeConnection!
   user(where: UserWhereUniqueInput!): User
-  users(
-    where: UserWhereInput
-    orderBy: UserOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [User]!
-  usersConnection(
-    where: UserWhereInput
-    orderBy: UserOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): UserConnection!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
 type Recipe {
   id: ID!
   title: String!
+  description: String
   author: User!
-  image: Image
+  image: File
   ingredients: [String!]!
   directions: String
-  categories(
-    where: CategoryWhereInput
-    orderBy: CategoryOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [Category!]
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   tags: [String!]!
 }
 
@@ -611,8 +501,9 @@ input RecipeCreateingredientsInput {
 input RecipeCreateInput {
   id: ID
   title: String!
+  description: String
   author: UserCreateOneWithoutRecipesInput!
-  image: ImageCreateOneInput
+  image: FileCreateOneInput
   ingredients: RecipeCreateingredientsInput
   directions: String
   categories: CategoryCreateManyWithoutRecipesInput
@@ -636,7 +527,8 @@ input RecipeCreatetagsInput {
 input RecipeCreateWithoutAuthorInput {
   id: ID
   title: String!
-  image: ImageCreateOneInput
+  description: String
+  image: FileCreateOneInput
   ingredients: RecipeCreateingredientsInput
   directions: String
   categories: CategoryCreateManyWithoutRecipesInput
@@ -646,8 +538,9 @@ input RecipeCreateWithoutAuthorInput {
 input RecipeCreateWithoutCategoriesInput {
   id: ID
   title: String!
+  description: String
   author: UserCreateOneWithoutRecipesInput!
-  image: ImageCreateOneInput
+  image: FileCreateOneInput
   ingredients: RecipeCreateingredientsInput
   directions: String
   tags: RecipeCreatetagsInput
@@ -663,6 +556,8 @@ enum RecipeOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  description_ASC
+  description_DESC
   directions_ASC
   directions_DESC
 }
@@ -670,6 +565,7 @@ enum RecipeOrderByInput {
 type RecipePreviousValues {
   id: ID!
   title: String!
+  description: String
   ingredients: [String!]!
   directions: String
   tags: [String!]!
@@ -704,6 +600,20 @@ input RecipeScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
   directions: String
   directions_not: String
   directions_in: [String!]
@@ -747,8 +657,9 @@ input RecipeUpdateingredientsInput {
 
 input RecipeUpdateInput {
   title: String
+  description: String
   author: UserUpdateOneRequiredWithoutRecipesInput
-  image: ImageUpdateOneInput
+  image: FileUpdateOneInput
   ingredients: RecipeUpdateingredientsInput
   directions: String
   categories: CategoryUpdateManyWithoutRecipesInput
@@ -757,6 +668,7 @@ input RecipeUpdateInput {
 
 input RecipeUpdateManyDataInput {
   title: String
+  description: String
   ingredients: RecipeUpdateingredientsInput
   directions: String
   tags: RecipeUpdatetagsInput
@@ -764,6 +676,7 @@ input RecipeUpdateManyDataInput {
 
 input RecipeUpdateManyMutationInput {
   title: String
+  description: String
   ingredients: RecipeUpdateingredientsInput
   directions: String
   tags: RecipeUpdatetagsInput
@@ -804,7 +717,8 @@ input RecipeUpdatetagsInput {
 
 input RecipeUpdateWithoutAuthorDataInput {
   title: String
-  image: ImageUpdateOneInput
+  description: String
+  image: FileUpdateOneInput
   ingredients: RecipeUpdateingredientsInput
   directions: String
   categories: CategoryUpdateManyWithoutRecipesInput
@@ -813,8 +727,9 @@ input RecipeUpdateWithoutAuthorDataInput {
 
 input RecipeUpdateWithoutCategoriesDataInput {
   title: String
+  description: String
   author: UserUpdateOneRequiredWithoutRecipesInput
-  image: ImageUpdateOneInput
+  image: FileUpdateOneInput
   ingredients: RecipeUpdateingredientsInput
   directions: String
   tags: RecipeUpdatetagsInput
@@ -871,8 +786,22 @@ input RecipeWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
   author: UserWhereInput
-  image: ImageWhereInput
+  image: FileWhereInput
   directions: String
   directions_not: String
   directions_in: [String!]
@@ -901,7 +830,7 @@ input RecipeWhereUniqueInput {
 
 type Subscription {
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
-  image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
+  file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   recipe(where: RecipeSubscriptionWhereInput): RecipeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -913,15 +842,7 @@ type User {
   password: String!
   updatedAt: DateTime!
   createdAt: DateTime!
-  recipes(
-    where: RecipeWhereInput
-    orderBy: RecipeOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [Recipe!]
+  recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe!]
 }
 
 type UserConnection {
