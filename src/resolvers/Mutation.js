@@ -3,14 +3,18 @@ import getUserId from "../utils/getUserId";
 import generateToken from "../utils/generateToken";
 import hashPassword from "../utils/hashPassword";
 import aws from "aws-sdk";
+import uuid from "uuid/v4";
 
 const s3 = new aws.S3({
-  accessKeyId: "foo",
-  secretAccessKey: "bar",
+  accessKeyId: "AKIAJZEKLZQW3RCTB5LQ",
+  secretAccessKey: "itLQXmmCIORoc/hNeGVcyatR4K9Bzr6YIYENFIdL",
   params: {
-    Bucket: "com.prisma.s3"
-  },
-  endpoint: new aws.Endpoint("http://localhost:4569") // fake s3 endpoint for local dev
+    Bucket: "leeper-family-cookbook"
+  }
+  //   endpoint: new aws.Endpoint(
+  //     "https://s3.console.aws.amazon.com/s3/buckets/leeper-family-cookbook/"
+  //   ) // fake s3 endpoint for local dev
+  //
 });
 
 const Mutation = {
@@ -150,10 +154,40 @@ const Mutation = {
   },
   async uploadImage(parent, { file }, ctx, info) {
     try {
-      const { stream, filename } = await file;
-      const result = await s3.upload({ stream, filename });
-      console.log(result);
-      return result;
+      const { createReadStream, filename, mimetype, encoding } = await file;
+
+      const stream = createReadStream();
+
+      const key = uuid() + "-" + filename;
+      const result = await s3
+        .upload(
+          {
+            Bucket: "leeper-family-cookbook",
+            Key: key,
+            ACL: "public-read",
+            Body: stream
+          },
+          function(err, data) {
+            if (err) {
+              console.log(err);
+            }
+            if (data) {
+              console.log(data);
+            }
+          }
+        )
+        .promise();
+      return await prisma.mutation.createImage(
+        {
+          data: {
+            filename: result.key,
+            url: result.location,
+            mimetype,
+            encoding
+          }
+        },
+        info
+      );
     } catch (err) {
       throw new Error("upload error: ", err);
     }
