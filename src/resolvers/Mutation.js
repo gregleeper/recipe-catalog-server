@@ -152,46 +152,44 @@ const Mutation = {
       "Recipe does not exist or you must be the author to update."
     );
   },
-  async uploadImage(parent, { file }, ctx, info) {
-    try {
-      const { createReadStream, filename, mimetype, encoding } = await file;
+  async uploadImage(parent, { file }, { prisma, request }, info) {
+    const { createReadStream, filename, mimetype, encoding } = await file;
+    console.log(file);
+    const stream = createReadStream();
 
-      const stream = createReadStream();
-
-      const key = uuid() + "-" + filename;
-      const result = await s3
-        .upload(
-          {
-            Bucket: "leeper-family-cookbook",
-            Key: key,
-            ACL: "public-read",
-            Body: stream
-          },
-          function(err, data) {
-            if (err) {
-              console.log(err);
-            }
-            if (data) {
-              console.log(data);
-            }
-          }
-        )
-        .promise();
-      return await prisma.mutation.createImage(
+    const key = uuid() + "-" + filename;
+    const result = await s3
+      .upload(
         {
-          data: {
-            filename: result.key,
-            url: result.location,
-            mimetype,
-            encoding
-          }
+          Bucket: "leeper-family-cookbook",
+          Key: key,
+          ACL: "public-read",
+          Body: stream
         },
-        info
-      );
-    } catch (err) {
-      throw new Error("upload error: ", err);
-    }
+        function(err, data) {
+          if (err) {
+            console.log(err);
+          }
+          if (data) {
+            console.log(data);
+          }
+        }
+      )
+      .promise();
+    console.log(result);
+    return prisma.mutation.createFile(
+      {
+        data: {
+          filename: result.key,
+          url: result.location,
+          mimetype,
+          encoding
+        }
+      },
+      info
+    );
   },
+
   async renameImage(parent, { id, name }, { prisma, request }, info) {
     return await prisma.mutation.updateImage({
       data: { name },

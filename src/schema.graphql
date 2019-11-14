@@ -101,7 +101,7 @@ type Mutation {
   ): Recipe!
   deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
   deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
-  createImage(data: FileCreateInput!): File!
+  createFile(data: FileCreateInput!): File!
   updateImage(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   deleteImage(where: FileWhereUniqueInput!): File
   uploadImage(file: Upload!): File!
