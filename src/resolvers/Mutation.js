@@ -6,8 +6,8 @@ import aws from "aws-sdk";
 import uuid from "uuid/v4";
 
 const s3 = new aws.S3({
-  accessKeyId: "AKIAJZEKLZQW3RCTB5LQ",
-  secretAccessKey: "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",
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
   params: {
     Bucket: "leeper-family-cookbook"
   }
