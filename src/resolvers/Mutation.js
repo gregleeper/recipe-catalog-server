@@ -56,15 +56,22 @@ const Mutation = {
   },
   async deleteUser(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
-
-    return prisma.mutation.deleteUser(
-      {
-        where: {
-          id: userId
-        }
-      },
-      info
-    );
+    const userExists = prisma.exists.User({
+      where: {
+        id: args.where.id
+      }
+    });
+    if (userExists) {
+      return prisma.mutation.deleteUser(
+        {
+          where: {
+            id: userId,
+            id: args.where.id
+          }
+        },
+        info
+      );
+    }
   },
   async updateUser(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
@@ -82,6 +89,7 @@ const Mutation = {
       },
       info
     );
+    throw new Error("User does not exist or is not found.");
   },
   async createCategory(parent, args, { prisma, request }, info) {
     return prisma.mutation.createCategory({ data: args.data }, info);
@@ -118,6 +126,7 @@ const Mutation = {
     const userId = getUserId(request);
     const recipeExists = prisma.exists.Recipe({
       id: args.where.id,
+
       author: {
         id: userId
       }
@@ -132,21 +141,25 @@ const Mutation = {
       "Recipe does not exist or you must be the author to delete the recipe."
     );
   },
-  updateRecipe(parent, args, { prisma, request }, info) {
+  async updateRecipe(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
-    const recipeExists = prisma.exists.Recipe({
+    const recipeExists = await prisma.exists.Recipe({
       id: args.where.id,
       author: { id: userId }
     });
-
+    console.log("args: ", args);
     if (recipeExists) {
-      return prisma.mutation.updateRecipe(
-        {
-          where: { id: args.where.id },
-          data: args.data
-        },
-        info
-      );
+      try {
+        return await prisma.mutation.updateRecipe(
+          {
+            where: { id: args.where.id },
+            data: args.data
+          },
+          info
+        );
+      } catch (error) {
+        throw new Error(error);
+      }
     }
     throw new Error(
       "Recipe does not exist or you must be the author to update."
@@ -154,7 +167,6 @@ const Mutation = {
   },
   async uploadImage(parent, { file }, { prisma, request }, info) {
     const { createReadStream, filename, mimetype, encoding } = await file;
-    console.log(file);
     const stream = createReadStream();
 
     const key = uuid() + "-" + filename;
@@ -176,15 +188,22 @@ const Mutation = {
         }
       )
       .promise();
-    console.log(result);
-    return prisma.mutation.createFile(
+    return await prisma.mutation.createFile(
       {
         data: {
           filename: result.key,
-          url: result.location,
+          url: result.Location,
           mimetype,
           encoding
         }
+      },
+      info
+    );
+  },
+  async createFile(parent, args, { prisma, reequest }, info) {
+    return await prisma.mutation.createFile(
+      {
+        data: args.data
       },
       info
     );
@@ -197,9 +216,17 @@ const Mutation = {
       info
     });
   },
-
-  async deleteImage(parent, { id }, { prisma, request }, info) {
-    return await prisma.mutation.deleteImage({ where: { id } }, info);
+  async deleteImage(parent, args, { prisma, request }, info) {
+    return await prisma.mutation.deleteFile(
+      { where: { id: args.where.id } },
+      info
+    );
+  },
+  async deleteManyImages(parent, args, { prisma, request }, info) {
+    return await prisma.mutation.deleteManyFiles(
+      { where: { url_contains: args.where.url_contains } },
+      info
+    );
   }
 };
 

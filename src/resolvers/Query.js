@@ -89,23 +89,24 @@ const Query = {
     return await prisma.query.recipe(
       {
         where: {
-          id: args.where.id
+          id: args.where.id,
+          handle: args.where.handle
         }
       },
       info
     );
   },
-  async images(parent, args, { prisma, request }, info) {
+  async files(parent, args, { prisma, request }, info) {
     const opArgs = {
       first: args.first,
       skip: args.skip,
       after: args.after,
       orderBy: args.orderBy
     };
-    return await prisma.query.images(opArgs, info);
+    return await prisma.query.files(opArgs, info);
   },
-  async image(parent, args, { prisma, request }, info) {
-    return prisma.query.image(
+  async file(parent, args, { prisma, request }, info) {
+    return prisma.query.file(
       {
         where: {
           id: args.where.id,

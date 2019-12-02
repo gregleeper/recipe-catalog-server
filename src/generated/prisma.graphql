@@ -479,6 +479,7 @@ type Query {
 type Recipe {
   id: ID!
   title: String!
+  handle: String!
   description: String
   author: User!
   image: File
@@ -501,6 +502,7 @@ input RecipeCreateingredientsInput {
 input RecipeCreateInput {
   id: ID
   title: String!
+  handle: String!
   description: String
   author: UserCreateOneWithoutRecipesInput!
   image: FileCreateOneInput
@@ -527,6 +529,7 @@ input RecipeCreatetagsInput {
 input RecipeCreateWithoutAuthorInput {
   id: ID
   title: String!
+  handle: String!
   description: String
   image: FileCreateOneInput
   ingredients: RecipeCreateingredientsInput
@@ -538,6 +541,7 @@ input RecipeCreateWithoutAuthorInput {
 input RecipeCreateWithoutCategoriesInput {
   id: ID
   title: String!
+  handle: String!
   description: String
   author: UserCreateOneWithoutRecipesInput!
   image: FileCreateOneInput
@@ -556,6 +560,8 @@ enum RecipeOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  handle_ASC
+  handle_DESC
   description_ASC
   description_DESC
   directions_ASC
@@ -565,6 +571,7 @@ enum RecipeOrderByInput {
 type RecipePreviousValues {
   id: ID!
   title: String!
+  handle: String!
   description: String
   ingredients: [String!]!
   directions: String
@@ -600,6 +607,20 @@ input RecipeScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  handle: String
+  handle_not: String
+  handle_in: [String!]
+  handle_not_in: [String!]
+  handle_lt: String
+  handle_lte: String
+  handle_gt: String
+  handle_gte: String
+  handle_contains: String
+  handle_not_contains: String
+  handle_starts_with: String
+  handle_not_starts_with: String
+  handle_ends_with: String
+  handle_not_ends_with: String
   description: String
   description_not: String
   description_in: [String!]
@@ -657,6 +678,7 @@ input RecipeUpdateingredientsInput {
 
 input RecipeUpdateInput {
   title: String
+  handle: String
   description: String
   author: UserUpdateOneRequiredWithoutRecipesInput
   image: FileUpdateOneInput
@@ -668,6 +690,7 @@ input RecipeUpdateInput {
 
 input RecipeUpdateManyDataInput {
   title: String
+  handle: String
   description: String
   ingredients: RecipeUpdateingredientsInput
   directions: String
@@ -676,6 +699,7 @@ input RecipeUpdateManyDataInput {
 
 input RecipeUpdateManyMutationInput {
   title: String
+  handle: String
   description: String
   ingredients: RecipeUpdateingredientsInput
   directions: String
@@ -717,6 +741,7 @@ input RecipeUpdatetagsInput {
 
 input RecipeUpdateWithoutAuthorDataInput {
   title: String
+  handle: String
   description: String
   image: FileUpdateOneInput
   ingredients: RecipeUpdateingredientsInput
@@ -727,6 +752,7 @@ input RecipeUpdateWithoutAuthorDataInput {
 
 input RecipeUpdateWithoutCategoriesDataInput {
   title: String
+  handle: String
   description: String
   author: UserUpdateOneRequiredWithoutRecipesInput
   image: FileUpdateOneInput
@@ -786,6 +812,20 @@ input RecipeWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  handle: String
+  handle_not: String
+  handle_in: [String!]
+  handle_not_in: [String!]
+  handle_lt: String
+  handle_lte: String
+  handle_gt: String
+  handle_gte: String
+  handle_contains: String
+  handle_not_contains: String
+  handle_starts_with: String
+  handle_not_starts_with: String
+  handle_ends_with: String
+  handle_not_ends_with: String
   description: String
   description_not: String
   description_in: [String!]
@@ -826,6 +866,7 @@ input RecipeWhereInput {
 
 input RecipeWhereUniqueInput {
   id: ID
+  handle: String
 }
 
 type Subscription {

@@ -11,6 +11,9 @@
 # import FileOrderByInput from './generated/prisma.graphql'
 # imoprt FileCreateInput from './generated/prisma.graphql'
 # import FileUpdateInput from './generated/prisma.graphql'
+# import FileCreateOneInput from './generated/prisma.graphql'
+# import FileWhereInput from './generated/prisma.graphql'
+# imoprt BatchPayload from './generated/prisma.graphql'
 
 type Query {
   users(
@@ -60,8 +63,8 @@ type Query {
     first: Int
     last: Int
   ): RecipeConnection!
-  image(where: FileWhereUniqueInput!): File
-  images(
+  file(where: FileWhereUniqueInput!): File
+  files(
     where: FileWhereInput
     orderBy: FileOrderByInput
     skip: Int
@@ -75,7 +78,7 @@ type Query {
 type Mutation {
   createUser(data: CreateUserInput!): AuthPayload!
   login(data: LoginUserInput!): AuthPayload!
-  deleteUser: User!
+  deleteUser(where: UserWhereUniqueInput!): User
   updateUser(data: UpdateUserInput!): User!
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(
@@ -101,11 +104,12 @@ type Mutation {
   ): Recipe!
   deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
   deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
-  createFile(data: FileCreateInput!): File!
+  createFile(data: FileCreateInput!): File
   updateImage(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   deleteImage(where: FileWhereUniqueInput!): File
   uploadImage(file: Upload!): File!
   renameImage(id: ID!, name: String!): File
+  deleteManyImages(where: FileWhereInput!): BatchPayload!
 }
 
 # type Subscription {
@@ -135,6 +139,7 @@ type CategoryConnection {
 type Recipe {
   id: ID!
   title: String!
+  handle: String!
   description: String
   ingredients: [String!]!
   directions: String
@@ -148,6 +153,7 @@ type Recipe {
     last: Int
   ): [Category!]
   tags: [String!]!
+  image: File
   author: User!
 }
 
@@ -205,10 +211,13 @@ input RecipeCreateingredientsInput {
 input RecipeCreateInput {
   id: ID
   title: String!
+  handle: String!
+  description: String!
   ingredients: RecipeCreateingredientsInput
   directions: String
   categories: CategoryCreateManyWithoutRecipesInput
   tags: RecipeCreatetagsInput
+  image: FileCreateOneInput
 }
 
 input CategoryCreateManyWithoutRecipesInput {
