@@ -78,6 +78,9 @@ const Query = {
         OR: [
           {
             title_contains: args.query
+          },
+          {
+            categories_some: { name_contains: args.query }
           }
         ]
       };
