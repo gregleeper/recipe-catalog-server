@@ -21,6 +21,7 @@
 # import TagOrderByInput from './generated/prisma.graphql'
 # import TagConnection from './generated/prisma.graphql'
 # import Tag from './generated/prisma.graphql'
+# import RecipeCreateInput from './generated/prisma.graphql'
 
 type Query {
   users(
@@ -232,18 +233,6 @@ scalar Upload
 
 input RecipeCreateingredientsInput {
   set: [String!]
-}
-
-input RecipeCreateInput {
-  id: ID
-  title: String!
-  handle: String!
-  description: String!
-  ingredients: RecipeCreateingredientsInput
-  directions: String
-  categories: CategoryCreateManyWithoutRecipesInput
-  tags: RecipeCreatetagsInput
-  image: FileCreateOneInput
 }
 
 input CategoryCreateManyWithoutRecipesInput {
