@@ -13,7 +13,14 @@
 # import FileUpdateInput from './generated/prisma.graphql'
 # import FileCreateOneInput from './generated/prisma.graphql'
 # import FileWhereInput from './generated/prisma.graphql'
-# imoprt BatchPayload from './generated/prisma.graphql'
+# import BatchPayload from './generated/prisma.graphql'
+# import TagCreateInput from './generated/prisma.graphql'
+# import TagUpdateInput from './generated/prisma.graphql'
+# import TagWhereUniqueInput from './generated/prisma.graphql'
+# import TagWhereInput from './generated/prisma.graphql'
+# import TagOrderByInput from './generated/prisma.graphql'
+# import TagConnection from './generated/prisma.graphql'
+# import Tag from './generated/prisma.graphql'
 
 type Query {
   users(
@@ -25,6 +32,16 @@ type Query {
   ): [User!]!
   user(where: UserWhereUniqueInput!): User
   me: User!
+  tag(where: TagWhereUniqueInput!): Tag
+  tags(
+    where: TagWhereInput
+    orderBy: TagOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Tag]!
   category(where: CategoryWhereUniqueInput!): Category
   categories(
     where: CategoryWhereInput
@@ -35,6 +52,15 @@ type Query {
     first: Int
     last: Int
   ): [Category]!
+  tagsConnection(
+    where: TagWhereInput
+    orderBy: TagOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): TagConnection!
   categoriesConnection(
     where: CategoryWhereInput
     orderBy: CategoryOrderByInput

@@ -29,7 +29,13 @@ type Recipe {
   directions: String
   categories: [Category!]!
     @relation(name: "RecipeCategories", onDelete: SET_NULL)
-  tags: [String!]! @scalarList(strategy: RELATION)
+  tags: [Tag!]! @relation(name: "RecipeTags", onDelete: SET_NULL)
+}
+
+type Tag {
+  id: ID! @id
+  name: String!
+  recipes: [Recipe] @relation(name: "RecipeTags", onDelete: SET_NULL)
 }
 
 type Category {
