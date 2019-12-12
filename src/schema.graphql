@@ -182,7 +182,7 @@ type Recipe {
     first: Int
     last: Int
   ): [Category!]
-  tags: [String!]!
+  tags: [Tag!]
   image: File
   author: User!
 }
