@@ -198,6 +198,18 @@ type AuthPayload {
   user: User!
 }
 
+input RecipeCreateInput {
+  id: ID
+  title: String!
+  handle: String!
+  description: String
+  image: FileCreateOneInput
+  ingredients: RecipeCreateingredientsInput
+  directions: String
+  categories: CategoryCreateManyWithoutRecipesInput
+  tags: TagCreateManyWithoutRecipesInput
+}
+
 input CreateUserInput {
   name: String!
   email: String!
