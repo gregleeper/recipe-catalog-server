@@ -35,6 +35,35 @@ const Query = {
       info
     );
   },
+  async tags(parent, args, {prisma, request}, info){
+    const opArgs = {
+      first: args.first,
+      skip: args.skip,
+      after: args.after,
+      orderBy: args.orderBy
+    };
+    if (args.query) {
+      opArgs.where = {
+        OR: [
+          {
+            name_contains: args.query
+          }
+        ]
+      };
+    }
+
+    return await prisma.query.tags(opArgs, info);
+  },
+  async tag(parent, args, {prisma, request}, info){
+    return await prisma.query.tag(
+      {
+        where: {
+          id: args.where.id
+        }
+      },
+      info
+    );
+  },
   async categories(parent, args, { prisma, request }, info) {
     const opArgs = {
       first: args.first,
@@ -81,6 +110,9 @@ const Query = {
           },
           {
             categories_some: { name_contains: args.query }
+          },
+          {
+            tags_some: {name_contains: args.query}
           }
         ]
       };

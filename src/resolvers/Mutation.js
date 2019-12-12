@@ -91,6 +91,30 @@ const Mutation = {
     );
     throw new Error("User does not exist or is not found.");
   },
+  async createTag(parent, args, {prisma, request}, info) {
+    return prisma.mutation.createTag({data: args.data}, info);
+  },
+  async deleteTag(parent, args, { prisma, request }, info) {
+    return prisma.mutation.deleteTag(
+      {
+        where: {
+          id: args.where.id
+        }
+      },
+      info
+    );
+  },
+  async updateTag(parent, args, { prisma, request }, info) {
+    return prisma.mutation.updateTag(
+      {
+        where: {
+          id: args.where.id
+        },
+        data: args.data
+      },
+      info
+    );
+  },
   async createCategory(parent, args, { prisma, request }, info) {
     return prisma.mutation.createCategory({ data: args.data }, info);
   },
