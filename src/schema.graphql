@@ -107,6 +107,9 @@ type Mutation {
   login(data: LoginUserInput!): AuthPayload!
   deleteUser(where: UserWhereUniqueInput!): User
   updateUser(data: UpdateUserInput!): User!
+  createTag(data: TagCreateInput!): Tag!
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag!
+  deleteTag(where: TagWhereInput!): Tag!
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(
     data: CategoryUpdateInput!
