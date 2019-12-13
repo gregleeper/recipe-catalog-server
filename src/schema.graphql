@@ -22,6 +22,7 @@
 # import TagConnection from './generated/prisma.graphql'
 # import Tag from './generated/prisma.graphql'
 # import RecipeCreateInput from './generated/prisma.graphql'
+# import TagCreateManyWithoutRecipesInput from './generated/prisma.graphql' 
 
 type Query {
   users(
