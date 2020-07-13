@@ -3,4 +3,4 @@ NodeJS, GraphQL, Prisma
 
 The final project can be found here: https://recipes.gregleeper19.now.sh/
 
-This project is to help me learn GraphQL using Prisma and GrapqhQL Yoga.
+For this project I used a combination of Hasura, NextJS and GraphQL to create a listing of recipes. There is an authenticated area of the site for adding your own recipes to the list including pictures. The storage for pictures is AWS S3. 
